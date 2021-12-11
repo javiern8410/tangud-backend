@@ -1,0 +1,16 @@
+{
+	"env": "PROD",
+	"views-context": ["/public", "/public/*"],
+	"static-context": ["/static", "/static/*"],
+	"api-context": "/api",
+	"error-stacktrace": true,
+	"rest": {
+		"x-client": "tangud-prod",
+		"timeout": 360000,
+		"integration": {
+			"login": {
+				"url": "https://n7guimk4u0.execute-api.us-east-1.amazonaws.com/prod/api-koin/oauth/login"
+			}
+		}
+	}
+}

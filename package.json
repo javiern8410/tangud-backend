@@ -1,0 +1,95 @@
+{
+	"name": "tangud-backend",
+	"version": "1.0.0",
+	"author": "ando",
+	"license": "ISC",
+	"description": "Tangud Backen Node.js/Express",
+	"main": "server/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/javiern8410/tangud-backend.git"
+	},
+	"keywords": [
+		"node",
+		"express",
+		"tangud"
+	],
+	"bugs": {
+		"url": "git+https://github.com/javiern8410/tangud-backend.git"
+	},
+	"homepage": "",
+	"engines": {
+		"node": "14.17.0"
+	},
+	"browserslist": [
+		">0.2%",
+		"not dead",
+		"not ie <= 11",
+		"not op_mini all"
+	],
+	"scripts": {
+		"start": "nodemon ./dist",
+		"debug": "node --inspect ./dist",
+		"dev:vendors": "npm install",
+		"dev:build:server": "webpack --color --watch --progress --config webpack.config.server.js --mode development",
+		"prod:vendors": "npm cache verify && rm -rf node_modules && npm install --production",
+		"prod:build:server": "webpack --color --config webpack.config.server.js --mode none",
+		"release": "npm run prod:vendors && npm-run-all prod:build:*",
+		"lint-staged": "lint-staged",
+		"lint": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+		"test": "node runner.js",
+		"postversion": "git push origin --tags"
+	},
+	"lint-staged": {
+		"src/**/*.{js,ts,tsx}": [
+			"eslint --fix",
+			"git add"
+		],
+		"*.{js,jsx,ts,tsx,json,css,md}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"dependencies": {
+		"@types/express": "4.17.13",
+		"@types/jest": "27.0.3",
+		"@types/node": "16.11.12",
+		"@typescript-eslint/eslint-plugin": "5.6.0",
+		"@typescript-eslint/parser": "5.6.0",
+		"axios": "0.24.0",
+		"chalk": "5.0.0",
+		"clean-webpack-plugin": "4.0.0",
+		"compression": "1.7.4",
+		"cookie-parser": "1.4.6",
+		"copy-webpack-plugin": "10.1.0",
+		"cors": "2.8.5",
+		"express": "4.17.1",
+		"express-async-errors": "3.1.1",
+		"express-handlebars": "6.0.2",
+		"express-request-id": "1.4.1",
+		"forever": "^4.0.1",
+		"fork-ts-checker-webpack-plugin": "6.5.0",
+		"jest-cli": "27.4.4",
+		"loglevel": "1.8.0",
+		"npm-run-all": "4.1.5",
+		"properties-reader": "2.2.0",
+		"terser-webpack-plugin": "5.2.5",
+		"thread-loader": "3.0.4",
+		"ts-jest": "27.1.1",
+		"ts-loader": "9.2.6",
+		"typescript": "4.5.3",
+		"webpack": "5.65.0",
+		"webpack-cli": "4.9.1",
+		"webpack-node-externals": "3.0.0"
+	},
+	"devDependencies": {
+		"eslint": "8.4.1",
+		"eslint-config-prettier": "8.3.0",
+		"eslint-plugin-prettier": "4.0.0",
+		"eslint-plugin-simple-import-sort": "7.0.0",
+		"husky": "7.0.4",
+		"lint-staged": "12.1.2",
+		"nodemon": "2.0.15",
+		"prettier": "2.5.1"
+	}
+}
