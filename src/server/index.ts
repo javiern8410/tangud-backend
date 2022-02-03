@@ -3,6 +3,7 @@ import logger from 'loglevel';
 import os from 'os';
 import { LogLevel } from 'ts-loader/dist/logger';
 
+import { connectDB } from './db/mongo';
 import { startServer } from './start';
 
 const numCPUs = os.cpus().length;
@@ -18,10 +19,11 @@ if (cluster.isMaster) {
 		cluster.fork();
 	}
 
-	cluster.on('exit', worker => {
+	cluster.on('exit', (worker) => {
 		logger.debug(`worker ${worker.process.pid} died`);
 		cluster.fork();
 	});
 } else {
+	connectDB();
 	startServer();
 }

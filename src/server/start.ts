@@ -11,7 +11,9 @@ import path from 'path';
 
 import config from './config';
 import { getRoutes } from './controller';
+import { closeDB } from './db/mongo';
 import errorMiddleware from './middleware/error';
+import notFound from './middleware/notFound';
 
 process.env.DEFAULT_PORT = '4000';
 
@@ -25,6 +27,9 @@ const startServer = (port = process.env.PORT || process.env.DEFAULT_PORT): Promi
 
 	app.use(config['static-context'], express.static(path.join(__dirname, PUBLIC_CONTEXT)));
 
+	// API KEY
+	app.set('api-key', config.sensitive['api.key']);
+
 	/* HANDLEBARS */
 
 	const hbs = create({
@@ -33,11 +38,12 @@ const startServer = (port = process.env.PORT || process.env.DEFAULT_PORT): Promi
 		layoutsDir: path.join(VIEWS_PATH, '/layouts'),
 		helpers: {
 			'static-context': () => config['static-context'],
-			toJSON: object => JSON.stringify(object)
+			toJSON: (object) => JSON.stringify(object)
 		}
-	})
+	});
+
 	app.set('views', VIEWS_PATH);
-	app.engine('.html',hbs.engine);
+	app.engine('.html', hbs.engine);
 	app.set('view engine', '.html');
 
 	/* HANDLEBARS */
@@ -54,15 +60,17 @@ const startServer = (port = process.env.PORT || process.env.DEFAULT_PORT): Promi
 	app.use(compression());
 
 	app.use(cookieParser());
-	app.use(errorMiddleware);
 	app.use('/', getRoutes());
+	app.use(errorMiddleware);
+	app.use(notFound);
 
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		const server: any = app.listen(port, () => {
 			logger.info(`Listening on port ${server.address().port}`);
 			const originalClose = server.close.bind(server);
+
 			server.close = () => {
-				return new Promise(resolveClose => {
+				return new Promise((resolveClose) => {
 					originalClose(resolveClose);
 				});
 			};
@@ -79,7 +87,8 @@ const setupCloseOnExit = (server: any) => {
 			.then(() => {
 				logger.info('Server successfully closed');
 			})
-			.catch(e => {
+			.catch((e) => {
+				closeDB();
 				logger.warn('Something went wrong closing the server', e.stack);
 			});
 		if (options.exit) {

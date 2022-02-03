@@ -14,15 +14,15 @@ module.exports = (_, argv) => {
 		entry: { index: './src/server' },
 		output: {
 			filename: '[name].js',
-			path: path.resolve(__dirname, backendPath)
+			path: path.resolve(__dirname, backendPath),
 		},
 		resolve: {
-			extensions: ['.js', '.ts', '.json']
+			extensions: ['.js', '.ts', '.json'],
 		},
 		externals: [nodeExternals()],
 		target: 'node',
 		node: {
-			__dirname: false
+			__dirname: false,
 		},
 		module: {
 			rules: [
@@ -30,19 +30,19 @@ module.exports = (_, argv) => {
 					test: /\.ts(x)?$/,
 					loader: 'ts-loader',
 					options: {
-						configFile: 'tsconfig.json'
-					}
-				}
+						configFile: 'tsconfig.json',
+					},
+				},
 				/*{
           test: /\.js$/,
           use: 'babel-loader',
           exclude: /node_modules/
         },*/
-			]
+			],
 		},
 		plugins: [
 			new CleanWebpackPlugin(),
-			new CopyPlugin({ patterns: [{ from: 'src/server/views', to: 'views' }] })
-		]
+			new CopyPlugin({ patterns: [{ from: 'src/server/views', to: 'views' }] }),
+		],
 	};
 };

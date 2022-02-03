@@ -12,5 +12,12 @@
 				"url": "https://n7guimk4u0.execute-api.us-east-1.amazonaws.com/prod/api-koin/oauth/login"
 			}
 		}
+	},
+	"db": {
+		"mongo": {
+			"urls": "localhost:27017",
+			"db": "tangud",
+			"replicaSet": ""
+		}
 	}
 }

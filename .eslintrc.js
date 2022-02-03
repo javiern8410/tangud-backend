@@ -1,12 +1,11 @@
 module.exports = {
 	env: {
-		browser: true,
+		browser: false,
 		es2021: true,
 		//commonjs: true,
 		node: true
 	},
 	extends: [
-		'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
 		'plugin:@typescript-eslint/recommended', // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 		'plugin:prettier/recommended' // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
 	],
@@ -15,10 +14,11 @@ module.exports = {
 		ecmaVersion: 12, // Allows for the parsing of modern ECMAScript features
 		sourceType: 'module', // Allows for the use of imports,
 		ecmaFeatures: {
+			ts: true,
 			jsx: true // Allows for the parsing of JSX
 		}
 	},
-	plugins: ['@typescript-eslint', 'simple-import-sort', 'react', 'react-hooks'],
+	plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
 	globals: {
 		Atomics: 'readonly',
 		SharedArrayBuffer: 'readonly',
@@ -26,11 +26,7 @@ module.exports = {
 		requireConfig: 'readonly',
 		requireLogger: 'readonly'
 	},
-	settings: {
-		react: {
-			version: 'detect' // Tells eslint-plugin-react to automatically detect the version of React to use
-		}
-	},
+	settings: {},
 	rules: {
 		// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
 		'no-console': 'warn',
@@ -40,13 +36,8 @@ module.exports = {
 		'@typescript-eslint/no-var-requires': 'off',
 		'@typescript-eslint/no-explicit-any': 'off',
 		'@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
-		'react/prop-types': 'off',
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/camelcase': 'off',
-		'react/jsx-no-target-blank': 'off',
-		'react/display-name': 'off',
-		'react-hooks/rules-of-hooks': 'warn',
-		'react-hooks/exhaustive-deps': 'warn',
 		'@typescript-eslint/ban-types': [
 			'error',
 			{
@@ -63,7 +54,33 @@ module.exports = {
 				extendDefaults: true
 			}
 		],
+		'prettier/prettier': [
+			'warn',
+			{
+				printWidth: 100,
+				tabWidth: 2,
+				semi: true,
+				singleQuote: true,
+				bracketSpacing: true,
+				arrowParens: 'always',
+				endOfLine: 'auto'
+			}
+		],
+		'@typescript-eslint/no-unused-vars': [
+			'warn',
+			{
+				args: 'after-used',
+				ignoreRestSiblings: false,
+				argsIgnorePattern: '^_.*?$'
+			}
+		],
 		'simple-import-sort/imports': 'error',
-		'simple-import-sort/exports': 'error'
+		'simple-import-sort/exports': 'error',
+		'padding-line-between-statements': [
+			'warn',
+			{ blankLine: 'always', prev: '*', next: 'return' },
+			{ blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+			{ blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
+		]
 	}
 };
