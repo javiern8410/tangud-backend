@@ -1,24 +1,31 @@
-import jsonwebtoken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
-const generateDespegarJWT = (token, secret, app) => {
-	const decoded = jsonwebtoken.decode(token);
+import config from './../config';
 
-	const allRolesPermissions = decoded.rc.filter((x) => (x.app = app)).flatMap((x) => x.per);
+const maxAge = 3 * 24 * 60 * 60;
 
+const generateJWT = (data) => {
 	const payload = {
-		username: decoded.sub,
-		exp: decoded.exp,
-		permissions: [...(new Set(allRolesPermissions) as any)], // Remove duplicates
+		username: data.username,
+		id: data.id
 	};
 
-	return jsonwebtoken.sign(payload, secret);
+	return jwt.sign(payload, config.sensitive['api.key'], {
+		expiresIn: maxAge
+	});
+};
+
+const createToken = (id, secret) => {
+	return jwt.sign({ id }, secret, {
+		expiresIn: maxAge
+	});
 };
 
 const decodeJWT = (token) => {
-	return jsonwebtoken.decode(token);
+	return jwt.decode(token);
 };
 
-const verifyJWT = (token, secret) => jsonwebtoken.verify(token, secret);
+const verifyJWT = (token, secret) => jwt.verify(token, secret);
 
 const checkJWT = (req, res, next, options = {} as any) => {
 	const cookie = req.cookies[options.cookieName];
@@ -40,9 +47,4 @@ const checkJWT = (req, res, next, options = {} as any) => {
 	}
 };
 
-export default {
-	generateDespegarJWT,
-	decodeJWT,
-	verifyJWT,
-	checkJWT,
-};
+export { checkJWT, createToken, decodeJWT, generateJWT, verifyJWT };

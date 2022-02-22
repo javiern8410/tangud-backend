@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
 
 import config from '../config';
-import { getApiController } from './api';
-import { getDefaultController } from './default';
-import { getHealthCheck } from './health-check';
+import { getApiController } from '../controller/api';
+import { getDefaultController } from '../controller/default';
+import { getHealthCheck } from '../controller/health-check';
 
 const getRoutes = (): Router => {
 	const router = express.Router();

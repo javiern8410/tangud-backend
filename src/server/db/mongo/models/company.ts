@@ -4,33 +4,36 @@ import { model, Schema } from 'mongoose';
  * Es el contrato con el tipo de datos que tiene el documento en nuestra colección.
  * Son a nivel de aplicación para validar, NO son a nivel de BBDD.
  */
-const UserSchema = new Schema({
+const CompanySchema = new Schema({
 	created: {
 		type: Date,
 		default: Date.now
 	},
-	username: String,
-	fullName: String,
-	email: String,
-	password: String,
+	owner: {
+		type: String,
+		required: true,
+		immutable: true
+	},
+	companyName: {
+		type: String,
+		required: true,
+		immutable: true
+	},
+	slogan: String,
+	logo: String,
 	active: {
 		type: Boolean,
-		default: false
+		default: true
 	},
-	deleted: {
-		type: Boolean,
-		default: false
-	},
-	phone: String,
-	gender: String,
-	friends: [String]
+	admins: [],
+	editors: []
 });
 
 /* model
  * Permite crear instancias segun un schema determinado
  */
 
-UserSchema.set('toJSON', {
+CompanySchema.set('toJSON', {
 	transform: (document, returnedObj) => {
 		returnedObj.id = returnedObj._id;
 		delete returnedObj._id;
@@ -38,6 +41,6 @@ UserSchema.set('toJSON', {
 	}
 });
 
-const User = model('User', UserSchema);
+const Company = model('Company', CompanySchema);
 
-export default User;
+export default Company;

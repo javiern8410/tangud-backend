@@ -47,7 +47,7 @@ const usersRoutes = (): Router => {
 		User.findOne({ username: user.username }).then((user) => {
 			if (user) {
 				res.status(302).send({
-					error: 'user exist'
+					error: "This usermane it's already in use"
 				});
 			} else {
 				newUser

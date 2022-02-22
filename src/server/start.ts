@@ -10,10 +10,10 @@ import logger from 'loglevel';
 import path from 'path';
 
 import config from './config';
-import { getRoutes } from './controller';
 import { closeDB } from './db/mongo';
 import errorMiddleware from './middleware/error';
 import notFound from './middleware/notFound';
+import { getRoutes } from './routes';
 
 process.env.DEFAULT_PORT = '4000';
 
